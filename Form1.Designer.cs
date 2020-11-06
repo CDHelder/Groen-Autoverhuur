@@ -190,6 +190,7 @@
             this.bReset.TabIndex = 13;
             this.bReset.Text = "Reset";
             this.bReset.UseVisualStyleBackColor = true;
+            this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
             // Form1
             // 

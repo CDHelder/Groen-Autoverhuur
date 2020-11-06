@@ -37,7 +37,7 @@ namespace Groen__Autoverhuur
         private void NullCheck()
         {
             //Check if all information needed for calculation is given
-            if (dateTimePickerStart.Value.Minute == DateTime.Now.Minute)
+            if (dateTimePickerStart.Value.Day == DateTime.Now.Day)
             {
                 MessageBox.Show("Please enter a start date");
                 LoadNullCheck = true;
@@ -70,15 +70,16 @@ namespace Groen__Autoverhuur
 
             //Calculation of days and money for those days
             int rentalDays;
-            string rentalDaysMoney;
+            int rentalDaysMoney;
+            rentalDaysMoney = 0;
             rentalDays = dateTimePickerEnd.Value.Day - dateTimePickerStart.Value.Day;
             if (rbPassengerBus.Checked)
             {
-                rentalDaysMoney = (rentalDays * 95).ToString();
+                rentalDaysMoney = (rentalDays * 95);
             }
-            if (rbPassengerCar.Checked)
+            else if (rbPassengerCar.Checked)
             {
-                rentalDaysMoney = (rentalDays * 50).ToString();
+                rentalDaysMoney = (rentalDays * 50);
             }
 
             //Calculation of money for kilometers
@@ -94,7 +95,7 @@ namespace Groen__Autoverhuur
             {
                 payKm = payKm * (3/10);
             }
-            if (rbPassengerCar.Checked)
+            else if (rbPassengerCar.Checked)
             {
                 payKm = payKm * (2 / 10);
             }
@@ -111,21 +112,37 @@ namespace Groen__Autoverhuur
             Passanger Bus: 13L/100Km
             */
             int gasMoney;
+            gasMoney = 0;
             if (rbPassengerBus.Checked)
             {
                 gasMoney = (Convert.ToInt32(nudAmountKm.Value) / 100) * 13;
             }
-            if (rbPassengerCar.Checked)
+            else if (rbPassengerCar.Checked)
             {
                 gasMoney = (Convert.ToInt32(nudAmountKm.Value) / 100) * (85/10);
             }
 
             //Total Calculation
-
-
+            int totalMoney;
+            totalMoney = rentalDaysMoney + payKm + gasMoney;
+            labelPrice.Text = String.Format("{0:C}", totalMoney);
 
             labelPrice.Visible = true;
             labelRentalPrice.Visible = true;
+        }
+
+        private void bReset_Click(object sender, EventArgs e)
+        {
+            labelPrice.Visible = false;
+            labelRentalPrice.Visible = false;
+
+            dateTimePickerStart.ResetText();
+            dateTimePickerEnd.ResetText();
+
+            rbPassengerCar.Checked = false;
+            rbPassengerBus.Checked = false;
+
+            nudAmountKm.Value = 0;
         }
     }
 }
